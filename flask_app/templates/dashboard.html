@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <title>Movie List</title>
+</head>
+<body>
+    <h1>Welcome, {{current_user.first_name}}!</h1>
+    <div class="d-flex justify-content-between">
+      <h5>All Posted Movies:</h5>
+      <div>
+        <a href="/movies/new">+ Create</a> | <a href="/logout">Logout</a>
+      </div></li>
+      </ul>
+    </div>
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+        <th>Title</th>
+        <th>Genres</th>
+        <th>Posted By</th>
+        <th>Actions</th>
+      </thead>
+      <tbody>
+        {% for movie in movies %}
+        <tr>
+          <td>{{ movie.title }}</td>
+          <td>{{ movie.genres}}</td>
+          <td>{{ movie.posted_by }}</td>
+          <td>
+              <a href="">view movie</a>
+              {% if recipe.user_id == current_user.id %}
+                <a href="">edit</a>
+                <a href="">delete</a>
+              {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div>
+      
+    </div>
+</body>
+</html>
