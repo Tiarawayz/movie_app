@@ -8,8 +8,8 @@
   <title>Register & Login</title>
 </head>
 <body>
-<div class="d-flex flex-wrap justify-content-around">
-  <div>
+<div class="container d-flex">
+
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul class=flashes>
@@ -20,55 +20,60 @@
       {% endif %}
     {% endwith %}
 
-    <h2>Login</h2>
-
-    <form action="/login" method="POST" class="col-6 p-3 bg-dark text-light">
-      <div class="email">
+    
+    <form action="/login" method="POST" class="p-3 m-5 shadow-lg bg-body-tertiary rounded  bg-body-secondary d-flex flex-md-column justify-content-around align-items-center">
+      <h2 class="mb-4 ">Login</h2>
+      
+      <div class="email mb-3">
         <label for="email">Email:</label>
         <input type="email" name="email" >
       </div>
 
-      <div class="password">
+      <div class="password mb-3">
         <label for="password">Password:</label>
         <input type="password" name="password" >
       </div>
 
-      <input type="submit" value="Log In"/>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
 
     </form>
-  </div>
-  <div class="card col-5">
-    <h2>Register</h2>
-    <form action="/user/register" method="post">
+
+
+    <form action="/user/register" method="post" class="p-4 m-5 shadow-lg bg-body-tertiary rounded  bg-body-secondary d-flex flex-md-column justify-content-around align-items-center">
+      <h2 class="mb-4">Register</h2>
       
-      <div class="email">
+      <div class="email mb-3">
         <label for="email">Email:</label>
         <input type="email" name="email" >
       </div>
 
-      <div class="name">
+      <div class="name mb-3">
         <label for="first_name">First Name:</label>
         <input type="text" name="first_name">
       </div>
       
-      <div class="name">
+      <div class="name mb-3">
         <label for="last_name">Last Name:</label>
         <input type="text" name="last_name">
       </div>
       
-      <div class="password">
+      <div class="password mb-3">
         <label for="password">Password:</label>
         <input type="password" name="password" >
       </div>
 
-      <div class="password">
+      <div class="password mb-3">
         <label for="password_confirmation">Confirm Password:</label>
         <input type="password" name="password_confirmation" />
       </div>
 
-      <input type="submit" value="Sign Up"/>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Sign up</button>
+      </div>
     </form>
-  </div>
+
 </div>
 </body>
 </html>
