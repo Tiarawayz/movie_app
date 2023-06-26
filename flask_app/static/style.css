@@ -1,0 +1,73 @@
+body {
+    background-color: rgb(16, 48, 173);
+    font-family: 'Roboto', sans-serif;
+    }
+
+h2 {
+    color: yellow;
+    font-weight: 900;
+}
+
+input {
+    color: yellow;
+    background-color: rgb(16, 48, 173);
+    border-radius: 15px;
+    margin: 5px;
+}
+
+form {
+    background-color: yellow;
+    padding: 20px;
+    box-shadow: 5px 5px rgb(113, 107, 34);
+    border-radius: 15px;
+    color: rgb(16, 48, 173);
+    font-weight: 800;
+}
+
+h3 {
+    color: rgb(16, 48, 173);
+    background-color: yellow;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 10px;
+    box-shadow: 5px 5px rgb(113, 107, 34);
+    text-align: center;
+    margin: 0px 200px 50px 200px;
+}
+
+.navbar {
+    color: rgb(16, 48, 173);
+    padding: 15px 15px 15px 15px;
+    background-color: yellow;
+    box-shadow: 5px 5px rgb(113, 107, 34);
+    margin: 10px 25px 50px 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+h1 {
+    font-weight: 900;
+    color: rgb(16, 48, 173);
+}
+
+.bblinks {
+    text-decoration: none;
+    color: rgb(16, 48, 173);
+    font-weight: 400;
+}
+
+button {
+    color: yellow;
+    background-color: rgb(16, 48, 173);
+    border-radius: 15px;
+    margin: 5px;
+}
+
+.membercard {
+    background-color: yellow;
+    padding: 20px;
+    box-shadow: 5px 5px rgb(113, 107, 34);
+    border-radius: 15px;
+    color: rgb(16, 48, 173);
+    font-weight: 800;
+}

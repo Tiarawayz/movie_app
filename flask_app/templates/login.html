@@ -1,79 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <title>Register & Login</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous" defer></script>
+    <link rel="stylesheet" href="/flask_app/static/style.css">
+    <title>Document</title>
 </head>
 <body>
-<div class="container d-flex">
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+  <div class="navbar">
+    <div>
+        <h1>Broke Buster</h1>
 
-    
-    <form action="/login" method="POST" class="p-3 m-5 shadow-lg bg-body-tertiary rounded  bg-body-secondary d-flex flex-md-column justify-content-around align-items-center">
-      <h2 class="mb-4 ">Login</h2>
-      
-      <div class="email mb-3">
-        <label for="email">Email:</label>
-        <input type="email" name="email" >
-      </div>
-
-      <div class="password mb-3">
-        <label for="password">Password:</label>
-        <input type="password" name="password" >
-      </div>
-
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Login</button>
-      </div>
-
-    </form>
-
-
-    <form action="/user/register" method="post" class="p-4 m-5 shadow-lg bg-body-tertiary rounded  bg-body-secondary d-flex flex-md-column justify-content-around align-items-center">
-      <h2 class="mb-4">Register</h2>
-      
-      <div class="email mb-3">
-        <label for="email">Email:</label>
-        <input type="email" name="email" >
-      </div>
-
-      <div class="name mb-3">
-        <label for="first_name">First Name:</label>
-        <input type="text" name="first_name">
-      </div>
-      
-      <div class="name mb-3">
-        <label for="last_name">Last Name:</label>
-        <input type="text" name="last_name">
-      </div>
-      
-      <div class="password mb-3">
-        <label for="password">Password:</label>
-        <input type="password" name="password" >
-      </div>
-
-      <div class="password mb-3">
-        <label for="password_confirmation">Confirm Password:</label>
-        <input type="password" name="password_confirmation" />
-      </div>
-
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Sign up</button>
-      </div>
-    </form>
-
+        <h5>There's no where to go rent videos anymore, so we made a place to talk about them.</h5>
+    </div>
 </div>
+
+<h3>Welcome to the "Store"</h3>
+<h3>What are you "Renting" tonight?</h3>
+
+<div class="container">
+    <div class="row d-flex">
+        <div class="col-6">
+            <h2>Start New Membership</h2>
+
+            {% with messages = get_flashed_messages(category_filter=['register']) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p style="color: red; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form action='/user/register' method="post">
+                <div>
+                    <label>
+                        First Name:
+                        <input type="text" name="first_name">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Last Name:
+                        <input type="text" name="last_name">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Email:
+                        <input type="text" name="email">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Password:
+                        <input type="password" name="password">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Confirm Password:
+                        <input type="password" name="confirm">
+                    </label>
+                </div>
+                <input type="submit" value="Create Membership">
+            </form>
+        </div>
+    
+
+        <div class="col-6">
+            <h2>Welcome Back</h2>
+
+            {% with messages = get_flashed_messages(category_filter=['login']) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p style="color: red; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action='/login' method="post">
+                <div>
+                    <label>
+                        Email:
+                        <input type="email" name="email">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Password:
+                        <input type="password" name="password">
+                    </label>
+                </div>
+                <input type="submit" value="Enter the Store">
+            </form>
+        <div>
+    </div>
+</div>
+
 </body>
 </html>
