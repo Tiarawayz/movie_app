@@ -13,6 +13,7 @@
       <h5>All Posted Movies:</h5>
       <div>
         <a href="/movies/new">+ Create</a> | <a href="/logout">Logout</a>
+        <a href="" class="bblinks">Profile Page</a> |
       </div></li>
       </ul>
     </div>
@@ -31,7 +32,7 @@
           <td>{{ movie.posted_by }}</td>
           <td>
               <a href="">view movie</a>
-              {% if recipe.user_id == current_user.id %}
+              {% if user_id == current_user.id %}
                 <a href="">edit</a>
                 <a href="">delete</a>
               {% endif %}
