@@ -18,7 +18,7 @@ class User:
 
     @classmethod
     def save (cls, data):
-      query = """INSERT into user (first_name, last_name, email, password, created_at, updated_at ) 
+      query = """INSERT into users (first_name, last_name, email, password, created_at, updated_at ) 
     VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s, NOW(),NOW());"""
       results = connectToMySQL('movie_app').query_db(query, data)
       return results 
@@ -33,7 +33,7 @@ class User:
 
     @classmethod
     def get_user_by_email (cls, email):
-      query = """SELECT id, first_name, last_name, email, password, created_at, updated_at FROM user WHERE email=%(email)s;"""
+      query = """SELECT id, first_name, last_name, email, password, created_at, updated_at FROM users WHERE email=%(email)s;"""
       results = connectToMySQL('movie_app').query_db(query, {"email": email})
       if isinstance(results, bool) or len(results) == 0:
         return None

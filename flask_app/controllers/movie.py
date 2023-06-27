@@ -16,3 +16,4 @@ def list_movies():
         current_user=user,
         recipes=Movie.get_all()
     )
+
