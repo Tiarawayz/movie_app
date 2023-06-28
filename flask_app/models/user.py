@@ -1,6 +1,7 @@
 from flask_app import app
 from flask_app.config.mysqlconnection import connectToMySQL 
 from flask_bcrypt import Bcrypt
+from flask import session,flash
 
 bcrypt = Bcrypt(app)
 
@@ -18,15 +19,30 @@ class User:
 
     @classmethod
     def save (cls, data):
-      query = """INSERT into users (first_name, last_name, email, password, created_at, updated_at ) 
-    VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s, NOW(),NOW());"""
+      query = """
+      INSERT into users 
+      (first_name, last_name, email, password, created_at, updated_at ) 
+      VALUES 
+      (%(first_name)s, %(last_name)s, %(email)s, %(password)s, NOW(),NOW());"""
       results = connectToMySQL('movie_app').query_db(query, data)
       return results 
+    
+    @classmethod
+    def update_user(cls,data):
+        query="""
+        UPDATE users
+        SET first_name=%(first_name)s, last_name=%(last_name)s
+        WHERE id=%(id)s
+        ;"""
+        return connectToMySQL(cls.DB).query_db(query,data)
 
     @classmethod
     def get_user_by_id(cls, id):
-      query = """SELECT id, first_name, last_name, email, password, created_at, updated_at FROM user WHERE id=%(id)s;"""
-      results = connectToMySQL('movie_app').query_db(query, {"id": id})
+      query = """SELECT id, first_name, last_name, email, password, created_at, updated_at FROM users WHERE id=%(id)s;"""
+      data = {
+        'id' : session['uid'],
+      }
+      results = connectToMySQL('movie_app').query_db(query, (data))
       if isinstance(results, bool) or len(results) == 0:
         return None
       return User(results[0])
@@ -84,3 +100,15 @@ class User:
 
         is_valid = len(errors) == 0
         return is_valid, errors
+    
+
+    @staticmethod
+    def is_valid_update(data):
+        is_valid = True
+        if len(data['first_name']) < 2:
+            flash("First name must be at least 2 characters.",'error')
+            is_valid = False
+        if len(data['last_name']) < 2:
+            flash("Last name must be at least 2 characters.",'error')
+            is_valid = False
+        return is_valid

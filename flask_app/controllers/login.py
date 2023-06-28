@@ -2,6 +2,7 @@ from flask_app import app
 from flask import render_template, request, flash, redirect, session
 from flask_session import Session
 from flask_app.models.user import User
+from flask_app.models import user
 
 
 Session(app)
@@ -18,7 +19,7 @@ def login_post():
         return render_template("login.html")
 
     session["uid"] = user.id
-    return redirect("/dashboard")
+    return redirect("/movies/dashboard")
 
 @app.route('/user/register', methods={'POST'})
 def register():
@@ -42,11 +43,41 @@ def register():
     flash('Thank you for registering')
 
     session["uid"] = user.id
-    return redirect("/dashboard")
+    return redirect("/movies/dashboard")
 
 
 @app.route('/logout')
 def logout():
     session.pop("uid")
     return redirect("/")
+
+#########
+
+@app.route ('/users/profile/<int:id>')
+def user_profile(id):
+    if 'uid' not in session:
+        return redirect('/')
+    data={
+        'id':id
+    }
+    return render_template('profile.html',one_user=user.User.get_user_by_id(data))
+
+@app.route('/users/edit/<int:id>')
+def edit_user(id):
+    if 'uid' not in session:
+        return redirect('/')
+    data={
+        'id':id
+    }
+    return render_template('update_user.html',one_user=user.User.get_user_by_id(data))
+
+@app.route('/user/update', methods=['POST'])
+def update_user():
+    if 'uid' not in session:
+        return redirect('/')
+    if not user.User.is_valid_update(request.form):
+        return redirect(f'/users/edit/{request.form["id"]}')
+    user.User.update_user(request.form)
+    return redirect('/movies/dashboard')
+
 

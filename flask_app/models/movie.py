@@ -9,19 +9,22 @@ class Movie:
     def __init__(self, data):
         self.id = data['id']
         self.title = data['title']
-        self.genre = data['genres']
+        self.genres = data['genres']
         self.year = data['year']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.user_id = data['user_id']
+        self.users_id = data['users_id']
         self.reviewer = None
 
 
 # crud method: Create
     @classmethod
     def save_movie(cls, data):
-        query = """ INSERT INTO movies (title, genre, year, user_id)
-        VALUES (%(title)s, %(genre)s, %(year)s, %(user_id)s); """ 
+        query = """ 
+        INSERT INTO movies 
+        (title, genres, year, users_id)
+        VALUES 
+        (%(title)s, %(genres)s, %(year)s, %(users_id)s); """ 
         return connectToMySQL(cls.db).query_db(query, data)
 
 
@@ -30,7 +33,7 @@ class Movie:
     @classmethod
     def get_all(cls):
         query = """ SELECT * FROM movies
-        LEFT JOIN users ON movies.user_id = users.id; """ 
+        LEFT JOIN users ON movies.users_id = users.id; """ 
         results = connectToMySQL(cls.db).query_db(query)
 
         all_movies = []
@@ -58,7 +61,7 @@ class Movie:
     @classmethod
     def get_one_movie(cls, data):
         query = """ SELECT * FROM movies
-        LEFT JOIN users ON movies.user_id = users.id
+        LEFT JOIN users ON movies.users_id = users.idgenre
         WHERE movies.id = %(id)s; """ 
 
         results = connectToMySQL(cls.db).query_db(query, data)
