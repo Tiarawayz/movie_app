@@ -1,19 +1,29 @@
 from flask_app import app
 from flask import render_template, request, flash, redirect, session
-from flask_app.models.user import User
-from flask_app.models.movie import Movie
+from flask_app.models import user, movie, review
 
-@app.route('/dashboard')
+@app.route('/movies/dashboard')
 def list_movies():
+    return render_template("dashboard.html")
 
-    if "uid" not in session:
-        flash("You're not logged in!")
-        return redirect("/login")
 
-    user = User.get_user_by_id(session["uid"])
-    return render_template(
-        "dashboard.html",
-        current_user=user,
-        recipes=Movie.get_all()
-    )
+@app.route('/movies/new')
+def new_movie():
+    data = {
+        'id' : session['login_id'],
+    }
+    return render_template("new_movie.html", one_user = user.User.get_user_by_id(data))
 
+
+@app.route('/movies/create', methods = ['POST'])
+def create_movie():
+    val_movie = movie.Movie.validate(request.form)
+    
+    # if nothing is filled out in form, validation will acivate
+    if not val_movie:
+        return redirect('/movies/new')
+
+    # if everything is filled out in form, takes user to dashboard
+    one_movie = movie.Movie.save_movie(request.form)
+    print(one_movie)
+    return redirect('/movies/dashboard')
