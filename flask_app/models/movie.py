@@ -1,71 +1,121 @@
 from flask_app.config.mysqlconnection import connectToMySQL
+from flask_app.models import user
+from flask import flash
 
 
 class Movie:
-  DB = 'movie_app'
+    db = 'movie_app'
 
-  def __init__(self, data):
-    self.id = data['id']
-    self.user_id = data['user_id']
-    self.title = data['title']
-    self.genres = data['genres']
-    self.year = data['year']
-    self.created_at = data.get('created_at')
-    self.updated_at = data.get('updated_at')
-
-  @classmethod
-  def save (cls, data):
-    query = """INSERT into recipes (title, genres, year, user_id, created_at, updated_at) 
-VALUES (%(user_id)s, %(title)s, %(genres)s, %(year)s, NOW(),NOW());"""
-    results = connectToMySQL('movie_app').query_db(query, data)
-    return results
-
-  @classmethod
-  def get_recipe_by_id(cls, id):
-    query = """SELECT movies.id as id, title, genres, year, recipes.created_at, movies.updated_at, user_id, first_name AS posted_by FROM
-    movies JOIN user ON user.id = movies.user_id WHERE movie.id = %(id)s;"""
-    results = connectToMySQL('movie_app').query_db(query, {"id": id})
-    return cls(results[0])
-
-  @classmethod
-  def get_all(cls):
-    query = """SELECT movie.id as id, title, genres, year, movies.created_at, movies.updated_at, user_id, first_name AS posted_by FROM
-    recipes JOIN user ON user.id = movies.user_id;"""
-    results = connectToMySQL('movie_app').query_db(query)
-    if not results:
-      return []
-    return [cls(row) for row in results]
-
-  @classmethod
-  def edit_recipe(cls, data):
-    query = """UPDATE movie SET title=%(title)s, genres=%(genres)s, year=%(year)s, WHERE movie.id = %(id)s;"""
-    results = connectToMySQL('movie_app').query_db(query, data)
-    return results
-
-  @classmethod
-  def delete_recipe_by_id(cls, id):
-    query = """DELETE FROM movies WHERE id = %(id)s;"""
-    results = connectToMySQL('movie_app').query_db(query, {"id": id})
-    return results
-
-  @staticmethod
-  def validate(data):
-      errors = []
-
-      required_fields = ('title', 'genres', 'year')
-      for required_field in required_fields:
-        if required_field not in data:
-          errors.append(f"Missing required field '{required_field}'!")
+    def __init__(self, data):
+        self.id = data['id']
+        self.title = data['title']
+        self.genre = data['genres']
+        self.year = data['year']
+        self.created_at = data['created_at']
+        self.updated_at = data['updated_at']
+        self.user_id = data['user_id']
+        self.reviewer = None
 
 
-      if len(data["name"]) < 2:
-        errors.append("Name must contain atleast 2 characters.")
+# crud method: Create
+    @classmethod
+    def save_movie(cls, data):
+        query = """ INSERT INTO movies (title, genre, year, user_id)
+        VALUES (%(title)s, %(genre)s, %(year)s, %(user_id)s); """ 
+        return connectToMySQL(cls.db).query_db(query, data)
 
-      if len(data["instructions"]) < 3:
-        errors.append("Instructions must contain atleast 8 characters.")
 
-      if len(data["description"]) < 3:
-        errors.append("Description must contain atleast 8 characters.")
+# crud method: read
+# combine get all users with get all movies = Movie.get_all()
+    @classmethod
+    def get_all(cls):
+        query = """ SELECT * FROM movies
+        LEFT JOIN users ON movies.user_id = users.id; """ 
+        results = connectToMySQL(cls.db).query_db(query)
 
-      is_valid = len(errors) == 0
-      return is_valid, errors
+        all_movies = []
+
+        for row in results:
+            one_movie = cls(row)
+
+            user_data = {
+                'id': row['users.id'],
+                'first_name' : row['first_name'],
+                'last_name' : row['last_name'],
+                'email' : row['email'],
+                'password' : row['password'],
+                'created_at' : row['users.created_at'],
+                'updated_at' : row['users.updated_at'],
+            }
+            one_movie.reviewer = user.User(user_data)
+
+            all_movies.append(one_movie)
+
+        return all_movies
+
+# get one movie
+# list in user will now have one movie
+    @classmethod
+    def get_one_movie(cls, data):
+        query = """ SELECT * FROM movies
+        LEFT JOIN users ON movies.user_id = users.id
+        WHERE movies.id = %(id)s; """ 
+
+        results = connectToMySQL(cls.db).query_db(query, data)
+
+        one_movie = cls(results[0])
+
+        user_data = {
+                'id': results[0]['users.id'],
+                'first_name' : results[0]['first_name'],
+                'last_name' : results[0]['last_name'],
+                'email' : results[0]['email'],
+                'password' : results[0]['password'],
+                'created_at' : results[0]['users.created_at'],
+                'updated_at' : results[0]['users.updated_at'],
+            }
+        one_movie.reviewer = user.User(user_data)
+
+        return one_movie
+
+
+# update
+    @classmethod
+    def update_movie(cls, data):
+        query = """ UPDATE movies
+        SET title = %(title)s, genres = %(genres)s, year = %(year)s
+        WHERE id = %(id)s; """ 
+
+        return connectToMySQL(cls.db).query_db(query, data)
+
+
+# delete
+    @classmethod
+    def delete_movie(cls, data):
+        query = """ DELETE FROM movies
+        WHERE id = %(id)s; """ 
+
+        return connectToMySQL(cls.db).query_db(query, data)
+
+
+
+
+# validation
+    @staticmethod 
+    def validate_movie(data):
+        is_valid = True
+
+# validate_title ->
+        if len(data['title']) == 0:
+            is_valid = False
+            flash('title can not be left empty', 'movie')
+# validate_genre ->
+        if len(data['genres']) == 0:
+            is_valid = False
+            flash('genres can not be left empty', 'movie')
+# validate_year ->
+        if len(data['year']) == 0:
+            is_valid = False
+            flash('Year can not be left empty', 'movie')
+
+        return is_valid
