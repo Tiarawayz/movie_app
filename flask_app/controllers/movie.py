@@ -9,11 +9,13 @@ def list_movies():
     data = {
         'id' : session['uid'],
     }
-    return render_template("dashboard.html", one_user = user.User.get_user_by_id(data))
+    return render_template("dashboard.html", movies=movie.Movie.get_all(), one_user = user.User.get_user_by_id(data))
 
 
 @app.route('/movies/new')
 def new_movie():
+    if 'uid' not in session:
+        return redirect('/')
     data = {
         'id' : session['uid'],
     }

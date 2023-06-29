@@ -41,9 +41,16 @@
 
             <div class="col-6">
                 <h2>Past "Rentals"</h2>
-                will need for loop for posts
                 
-            
+                {% for movie in movies %}
+                    {% if session['uid'] == movie.reviewer.id %}
+                    <div class="membercard">
+                        <p>{{movie.title}}</p>
+                        <p>Genres: {{movie.genres}}</p>
+                        <p>Year: {{movie.year}}</p>
+                    </div>
+                    {% endif %}
+                {% endfor %}
 
             <div>
         </div>

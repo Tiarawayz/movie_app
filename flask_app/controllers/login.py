@@ -2,7 +2,7 @@ from flask_app import app
 from flask import render_template, request, flash, redirect, session
 from flask_session import Session
 from flask_app.models.user import User
-from flask_app.models import user
+from flask_app.models import user, movie
 
 
 Session(app)
@@ -60,7 +60,7 @@ def user_profile(id):
     data={
         'id':id
     }
-    return render_template('profile.html',one_user=user.User.get_user_by_id(data))
+    return render_template('profile.html',movies=movie.Movie.get_all(), one_user=user.User.get_user_by_id(data))
 
 @app.route('/users/edit/<int:id>')
 def edit_user(id):
