@@ -40,16 +40,19 @@
                 {% endif %}
             {% endwith %}
                 <div >
-                    <label for="title" >Title:</label>
-                    <input type="text" name="title">
+                    <label>Title:
+                        <input type="text" name="title">
+                    </label>
                 </div>
                 <div >
-                    <label for="genres" >Genre:</label>
-                    <input type="text" name="genres">
+                    <label>Genre:
+                        <input type="text" name="genres">
+                    </label>
                 </div>
                 <div >
-                    <label for="year" >Year:</label>
-                    <input type="number" name="year">
+                    <label>Year:
+                        <input type="number" name="year">
+                    </label>
                 </div>
                 <div >
                     <input type="hidden" name="users_id" value="{{session['uid']}}">
